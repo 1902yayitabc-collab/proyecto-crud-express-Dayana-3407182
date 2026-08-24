@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/1902yayitabc-collab/proyecto-crud-express-Dayana-3407182/issues"
   },
