@@ -1,14 +1,28 @@
-const express = require ('express');
+const { error } = require('console');
+const express = require('express');
 const app = express();
 const port = process.env.MIPUERTO || 3003; 
-
-//librerias fs, path
-const sistemaArchivo = require("fs");
+//libreria fs.path
+const sistemaArchivo = require("fs")
 const ruta = require("path")
-const rutaMiArchivo =ruta.join(__dirname, "datos.json");
-//middlewarc body-partes
+const rutaMiArchivo = ruta.join(__dirname,"datos.json")
+//importar multer
+const multer =require("multer")
+//almacenamiento
+const almacen = multer.diskStorage({
+
+  destination: (req, file, cb)=>{cb(null, "misImagenes/")},
+  filename: (req, file, cb)=>{
+    const extension = ruta.extname(file.originalname)
+    cb(null, `${Date.now()}${extension}`)
+  },
+
+})
+const subir = multer({storage: almacen})
+
+//middlewarc body-parse
 app.use(express.json())
-app.use(express.urlencoded({extended: true})) 
+app.use(express.urlencoded({extended : true}))
 
 
 app.get('/', (req, res) => {
@@ -16,32 +30,37 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/aprendices', (req, res) => {
-  sistemaArchivo.readFile(rutaMiArchivo, "utf-8", (error, datos)=> {
-   if(error) res.status(500).json({Error: "No se puede leer el archivo"})
-   const listaAprendices = JSON.parse (datos)
-   res.status (200).json({listado: listaAprendices})     
+  sistemaArchivo.readFile(rutaMiArchivo, "utf-8", (error, Datos)=>{
+    if (error) res.status(500).json({error : "No se puede leer el archivo"})
+    const listaAprendices = JSON.parse (Datos)
+    res.status(200).json({ Listado : listaAprendices})
   })
 });
 
-app.post('/api/aprendices', (req, res) => {
+
+app.post('/api/aprendices', subir.single("imagen"), (req, res) => {
   const datosAprendiz = req.body
-  sistemaArchivo.readFile(rutaMiArchivo, "utf-8", (error, datos)=> {
-   if(error) res.status(500).json({Error: "No se puede leer el archivo"})
-    const listaAprendices = JSON.parse (datos)
-    listaAprendices.push(datosAprendiz)
-    sistemaArchivo.writeFile(rutaMiArchivo, JSON.stringify(listaAprendices, null, 2), (error)=> {
-      if(error) res.status(500).json({Error: "No se puede escribir en el archivo"})
-      res.status(200).json({mensaje: "creado", datos: datosAprendiz})
-    });     
-  });
+  datosAprendiz.imagen = req.file? `/misImagenes${req.file.filename}`: "sin Imagen"
+ sistemaArchivo.readFile(rutaMiArchivo, "utf-8", (error, Datos)=>{
+    if (error) res.status(500).json({error : "No se puede leer el archivo"})
+    const listaAprendices = JSON.parse (Datos)
+  listaAprendices.push(datosAprendiz)
+  sistemaArchivo.writeFile(rutaMiArchivo, JSON.stringify(listaAprendices, null, 2), (error)=>{
+    if (error) res.status(500).json({error : "No se puede escribir en el archivo"})
+      res.status(200).json({Mensaje : "Creado", Datos: datosAprendiz})
+  })
+  
+  })
 });
 
+
+
 app.put('/api/aprendices/:id', (req, res) => {
- res.status(200).json({mensaje: "Actualizar aprencices"})
+res.status(200).json({Mensaje:"actualiza aprendices"})
 });
 
 app.delete('/api/aprendices', (req, res) => {
- res.status(200).json({mensaje: "Eliminado"})
+res.status(200).json({Mensaje:"eliminado"})
 });
 
 app.listen(port, () => {

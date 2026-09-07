@@ -6,8 +6,6 @@
     "imagen": "url",
     "clave": "12345"
   },
- 
-  
   {
     "nombre": "mariana",
     "edad": 17,
@@ -15,12 +13,18 @@
     "imagen": "url",
     "clave": "123"
   },
-  
   {
     "nombre ": "Sofia",
     "edad": "18",
     "correo": "sofiatorres@gmail.com",
     "imagen ": "url",
     "clave": "121245"
+  },
+  {
+    "nombre": "ana",
+    "edad": "17",
+    "correo": "ana@gmail.com",
+    "clave": "987654",
+    "imagen": "/misImagenes1788798911501.jpg"
   }
 ]
