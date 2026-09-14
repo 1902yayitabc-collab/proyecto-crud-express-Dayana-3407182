@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "nombre": "Dayana",
     "edad": 17,
     "correo": "1902yayitabc@gmail.com",
@@ -7,6 +8,7 @@
     "clave": "12345"
   },
   {
+    "id": 2,
     "nombre": "mariana",
     "edad": 17,
     "correo": "mariana123@gmail.com",
@@ -14,17 +16,35 @@
     "clave": "123"
   },
   {
-    "nombre ": "Sofia",
+    "id": 3,
+    "nombre": "Sofia",
     "edad": "18",
     "correo": "sofiatorres@gmail.com",
-    "imagen ": "url",
+    "imagen": "url",
     "clave": "121245"
   },
   {
+    "id": 4,
     "nombre": "ana",
     "edad": "17",
     "correo": "ana@gmail.com",
     "clave": "987654",
     "imagen": "/misImagenes1788798911501.jpg"
+  },
+  {
+    "id": 5,
+    "nombre": "Andres",
+    "correo": "andres@gmail.com",
+    "edad": 20,
+    "clave": "1234",
+    "imagen": "sin Imagen"
+  },
+  {
+    "nombre": "camila",
+    "correo": "camila@gmail.com",
+    "edad": 15,
+    "clave": "12245",
+    "imagen": "sin Imagen",
+    "id": 6
   }
 ]
