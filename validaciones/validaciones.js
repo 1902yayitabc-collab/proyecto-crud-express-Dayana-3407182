@@ -1,42 +1,29 @@
-// validaciones/validaciones.js
+function validarAprendiz(req, res, next) {
+    const { id, nombre, correo } = req.body;
+    const errores = [];
 
-//name > 3
-function validarNombre(nombre) {
-  if (typeof nombre !== "string") return false;
-  return nombre.trim().length >= 3;
+    // Validar nombre (> 3 letras)
+    if (!nombre || typeof nombre !== 'string' || nombre.trim().length <= 3) {
+        errores.push('El nombre debe tener más de 3 letras.');
+    }
+
+    // Validar correo con expresión regular
+    const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!correo || !regexCorreo.test(correo)) {
+        errores.push('Ingrese un correo electrónico válido.');
+    }
+
+    // Validar id (si se llega a enviar por el body, debe ser un número)
+    if (id !== undefined && isNaN(Number(id))) {
+        errores.push('El id debe ser un valor numérico válido.');
+    }
+
+    // Si hay errores, detener la petición
+    if (errores.length > 0) {
+        return res.status(400).json({ ok: false, errores });
+    }
+
+    next();
 }
 
-//correo expresiones regulares
-function validarCorreo(correo) {
-  if (typeof correo !== "string") return false;
-  const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regexCorreo.test(correo.trim());
-}
-
-//id:
-function validarId(id) {
-  // el id debe existir y ser un número válido
-  return id !== undefined && id !== null && !isNaN(Number(id));
-}
-
-// Junta las validaciones de un aprendiz y devuelve un arreglo con los errores encontrados
-function validarAprendiz({ nombre, correo }) {
-  const errores = [];
-
-  if (!validarNombre(nombre)) {
-    errores.push("El nombre debe tener mínimo 3 letras.");
-  }
-
-  if (!validarCorreo(correo)) {
-    errores.push("El correo debe tener un formato válido, ejemplo: usuario@dominio.com");
-  }
-
-  return errores;
-}
-
-module.exports = {
-  validarId,
-  validarNombre,
-  validarCorreo,
-  validarAprendiz
-};
+module.exports = { validarAprendiz };
