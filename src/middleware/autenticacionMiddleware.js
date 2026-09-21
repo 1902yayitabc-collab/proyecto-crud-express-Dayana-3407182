@@ -1,4 +1,4 @@
-const jwtojen = require ("jsonwebtoken")
+const jwtoken = require ("jsonwebtoken")
 const autenticacion  = (req, res, next) => {
     const token = req.header
     ("campoAutenticar")?.split(" ")[1]

@@ -1,17 +1,20 @@
+require("dotenv").config()
 const { error } = require('console');
 const express = require('express');
 const app = express();
 const port = process.env.MIPUERTO || 3003; 
+const jwtoken = require ("jsonwebtoken")
 //importar mis Mmiddleware
-const registroMiddleware = require("./middleware/registroMiddleware")
-const manejandoErroresMiddleware = require("./middleware/manejandoErroresMiddleware")
+const registroMiddleware = require("./src/middleware/registroMiddleware")
+const manejandoErroresMiddleware = require("./src/middleware/manejandoErroresMiddleware")
+const auntenjiboibticacionMiddleware = require ("./src/middleware/autenticacionMiddleware")
 //libreria fs.path
 const sistemaArchivo = require("fs")
 const ruta = require("path")
 const rutaMiArchivo = ruta.join(__dirname,"datos.json")
 
 //importar validacion
-const { validarAprendiz } = require("./validaciones/validaciones")
+const { validarAprendiz } = require("./src/validaciones/validaciones")
 
 //importar multer
 const multer =require("multer")
@@ -85,6 +88,30 @@ res.status(200).json({Mensaje:"eliminado"})
 app.get("/api/error", (req,res,next)=>{
   next(new Error("este es un error provocado"))
 })
+
+app.get("/api/rutaprotegida", auntenjiboibticacionMiddleware, (req, res) => {
+  res.json({ mensaje: "Ruta protegida, acceso con token"});
+});
+
+//endpoint o ruta de inicio de sesion para generar un token
+app.post("/api/iniciarsesion",  (req, res) => {
+  //capturar datos del usuario 
+  const { usuario, clave } = req.body;
+  //simular datos deusuario en la BD 
+  const bdUsuario = {"usuario": "Dayana", "clave": "abc123"}
+  //validar datos 
+  if (usuario !== bdUsuario.usuario || clave !== bdUsuario.clave)
+    {
+    res.json({ mensaje: "usuario y/o calve incorrecta"})
+  }
+  //verificacion y generacion del token 
+  const token = jwtoken.sign(
+    {"user": req.usuario},
+    process.env.JWT_SECRETO,{
+      expiresIn: "1h"
+    });
+  res.json({ token })
+});
 
 app.use(manejandoErroresMiddleware)
 
