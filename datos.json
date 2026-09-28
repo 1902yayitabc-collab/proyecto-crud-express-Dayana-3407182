@@ -8,9 +8,9 @@
   },
   {
     "id": 1,
-    "nombre": "Alison",
-    "edad": "18",
-    "correo": "Alison@gmail.com",
+    "nombre": "Alison Actualizada",
+    "edad": 19,
+    "correo": "alison_nuevo@gmail.com",
     "clave": "12345678",
     "imagen": "/misImagenes/1789389920588.jpeg"
   },

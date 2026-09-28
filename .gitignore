@@ -60,3 +60,10 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# Variables de entorno (no subir a GitHub)
+.env
+.env.*
+
+# Permitir subir la carpeta misImagenes pero no archivos temporales extra
+!src/misImagenes/

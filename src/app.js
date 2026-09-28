@@ -1,19 +1,18 @@
-require("dotenv").config();
-const express = require("express");
-const enrutadorGeneral = require("./routes");
-
+const express = require('express');
 const app = express();
-//debmos importar los enrutadores de la carpeta router 
 
-//importar los middleware
+// Middlewares para procesar peticiones JSON y formularios
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-//usamos el enrutador general 
-app.use("/api", enrutadorGeneral)
+// Importar rutas
+const indexRoutes = require('./routes/index');
+const productoRouter = require('./routes/productoRouter');
+const pruebaRouter = require('./routes/pruebaRouter');
 
-//enpoint de la ruta raiz de la bienvenida a la API 
-app.get ("/", (req, res) => {
-    res.send("Api Rest 3407182 en funcionamiento");
-});
+// Montar las rutas
+app.use('/', indexRoutes);                 // http://localhost:3333/
+app.use('/productos', productoRouter);      // http://localhost:3333/productos
+app.use('/prueba', pruebaRouter);           // http://localhost:3333/prueba
+
 module.exports = app;
